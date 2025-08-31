@@ -31,7 +31,7 @@ const loginUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(voi
     const token = (0, createUserToken_1.createUserToken)(loggedInUser);
     (0, setCookies_1.setCookie)(res, token);
     (0, sendResponse_1.sendResponse)(res, {
-        statusCode: 201,
+        statusCode: 200,
         message: "User Logged In Successfully",
         success: true,
         data: {
@@ -39,4 +39,22 @@ const loginUser = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(voi
         },
     });
 }));
-exports.authController = { registerUser, loginUser };
+const logout = (0, catchAsync_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    res.clearCookie("accessToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+    });
+    res.clearCookie("refreshToken", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+    });
+    (0, sendResponse_1.sendResponse)(res, {
+        statusCode: 200,
+        message: "User Logged Out Successfully",
+        success: true,
+        data: "",
+    });
+}));
+exports.authController = { registerUser, loginUser, logout };

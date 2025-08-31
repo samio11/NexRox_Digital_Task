@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.jobsRoutes = void 0;
+const express_1 = require("express");
+const checkAuth_1 = require("../../middlewares.ts/checkAuth");
+const jobs_controller_1 = require("./jobs.controller");
+const routes = (0, express_1.Router)();
+routes.post("/", (0, checkAuth_1.checkAuth)("USER"), jobs_controller_1.jobController.createAJob);
+routes.get("/", (0, checkAuth_1.checkAuth)("USER"), jobs_controller_1.jobController.getAllJob);
+routes.delete("/:id", (0, checkAuth_1.checkAuth)("USER"), jobs_controller_1.jobController.deleteAJob);
+routes.put("/:id", (0, checkAuth_1.checkAuth)("USER"), jobs_controller_1.jobController.updateAJob);
+exports.jobsRoutes = routes;

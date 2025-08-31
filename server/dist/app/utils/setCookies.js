@@ -6,14 +6,14 @@ const setCookie = (res, token) => {
         res.cookie("accessToken", token.accessToken, {
             httpOnly: true,
             secure: true,
-            sameSite: false,
+            sameSite: "none",
         });
     }
     if (token.refreshToken) {
         res.cookie("refreshToken", token.refreshToken, {
             httpOnly: true,
             secure: true,
-            sameSite: false,
+            sameSite: "none",
         });
     }
 };

@@ -1,0 +1,26 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.ESkills = void 0;
+var ESkills;
+(function (ESkills) {
+    ESkills["HTML"] = "HTML";
+    ESkills["CSS"] = "CSS";
+    ESkills["JavaScript"] = "JavaScript";
+    ESkills["TypeScript"] = "TypeScript";
+    ESkills["React"] = "React";
+    ESkills["NextJS"] = "Next.js";
+    ESkills["Angular"] = "Angular";
+    ESkills["Vue"] = "Vue.js";
+    ESkills["NodeJS"] = "Node.js";
+    ESkills["ExpressJS"] = "Express.js";
+    ESkills["NestJS"] = "NestJS";
+    ESkills["MongoDB"] = "MongoDB";
+    ESkills["PostgreSQL"] = "PostgreSQL";
+    ESkills["MySQL"] = "MySQL";
+    ESkills["GraphQL"] = "GraphQL";
+    ESkills["AWS"] = "AWS";
+    ESkills["Docker"] = "Docker";
+    ESkills["Git"] = "Git";
+    ESkills["Figma"] = "Figma";
+    ESkills["UIUX"] = "UI/UX Design";
+})(ESkills || (exports.ESkills = ESkills = {}));

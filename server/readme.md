@@ -1,113 +1,335 @@
-Job Board API
-A RESTful API for a job board application built with Node.js, Express, TypeScript, and MongoDB. This project supports user authentication and job management functionalities, allowing users to register, log in, and manage job postings.
-Table of Contents
+Job Portal Backend API
+A RESTful API for a job portal application built with Node.js, Express, TypeScript, and MongoDB. This API supports user authentication, job posting, and job management functionalities.
 
-Features
-Technologies
-Installation
-Usage
-API Endpoints
-Folder Structure
-Contributing
-License
+🚀 Features
+User Authentication (Register, Login, Logout)
 
-Features
+JWT-based authentication with secure cookies
 
-User authentication (register, login, logout) with JWT-based authorization.
-Create, read, update, and delete (CRUD) operations for job postings.
-Query builder for filtering, searching, sorting, and paginating job listings.
-Role-based access control (only job owners can update/delete their jobs).
-Password hashing with bcrypt for security.
-Error handling for invalid requests, unauthorized access, and resource not found.
+Job CRUD operations (Create, Read, Update, Delete)
 
-Technologies
+Advanced querying with filtering, searching, sorting, and pagination
 
-Node.js: JavaScript runtime for server-side development.
-Express: Web framework for building RESTful APIs.
-TypeScript: Type-safe JavaScript superset.
-MongoDB: NoSQL database for storing user and job data.
-Mongoose: ODM for MongoDB.
-Bcrypt: Password hashing library.
-JSON Web Tokens (JWT): For secure user authentication.
-Zod: For request validation (if applicable).
+Role-based access control
 
-Installation
+Password hashing with bcrypt
 
+Error handling and validation
+
+📦 Installation
 Clone the repository:
-git clone https://github.com/your-username/job-board-api.git
-cd job-board-api
 
+bash
+git clone <your-repo-url>
+cd server
 Install dependencies:
+
+bash
 npm install
+Set up environment variables:
 
-Set up environment variables:Create a .env file in the root directory and add the following:
+bash
+# Create a .env file in the root directory
 PORT=5000
-MONGODB_URI=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-BCRYPT_SALT=10
+MONGODB_URI=mongodb://localhost:27017/job-portal
+BCRYPT_SALT=12
+JWT_ACCESS_SECRET=your-access-token-secret
+JWT_REFRESH_SECRET=your-refresh-token-secret
+NODE_ENV=development
+Start the development server:
 
-Build the project:
-npm run build
-
-Start the server:
-npm run start
-
-The API will be available at http://localhost:5000/api/v1.
-
-Usage
-
-Register a user via the /auth/register endpoint.
-Log in to receive a JWT token via the /auth/login endpoint.
-Use the token in the Authorization header (Bearer <access_token>) to access protected job endpoints.
-Create, retrieve, update, or delete job postings using the /jobs endpoints.
-Refer to the GitHub.md file for detailed endpoint documentation and example requests.
-
-API Endpoints
-For detailed endpoint documentation, including example requests and responses, refer to the GitHub.md file. Below is a summary:
-
-Auth Routes:
-
-POST /auth/register: Register a new user.
-POST /auth/login: Log in and receive JWT tokens.
-POST /auth/logout: Log out and clear cookies.
-
-Job Routes (require authentication):
-
-POST /jobs: Create a new job posting.
-GET /jobs: Retrieve all jobs with optional filtering/sorting.
-PUT /jobs/:id: Update a job by ID (owner only).
-DELETE /jobs/:id: Delete a job by ID (owner only).
-
-Folder Structure
-job-board-api/
-├── dist/ # Compiled JavaScript files
+bash
+npm run dev
+🏗️ Project Structure
+text
+server/
 ├── src/
-│ ├── app.ts # Express app configuration
-│ ├── server.ts # Server entry point
-│ ├── app/
-│ │ ├── config/ # Configuration (e.g., environment variables)
-│ │ ├── errors/ # Custom error handling
-│ │ ├── interfaces/ # TypeScript interfaces
-│ │ ├── middlewares.ts/ # Middleware functions (auth, error handling)
-│ │ ├── modules/
-│ │ │ ├── auth/ # Authentication module
-│ │ │ ├── jobs/ # Job management module
-│ │ │ └── user/ # User management module
-│ │ ├── routes/ # API route definitions
-│ │ └── utils/ # Utility functions (e.g., QueryBuilder, JWT)
-├── package.json # Project metadata and dependencies
-├── tsconfig.json # TypeScript configuration
-├── .gitignore # Git ignore file
-└── README.md # Project documentation
+│   ├── app/
+│   │   ├── config/          # Configuration files
+│   │   ├── errors/          # Error handling utilities
+│   │   ├── interfaces/      # TypeScript interfaces
+│   │   ├── middlewares.ts/  # Custom middlewares
+│   │   ├── modules/         # Feature modules
+│   │   │   ├── auth/        # Authentication module
+│   │   │   ├── jobs/        # Jobs module
+│   │   │   └── user/        # User module
+│   │   ├── routes/          # Route definitions
+│   │   └── utils/           # Utility functions
+│   ├── app.ts              # Express app configuration
+│   └── server.ts           # Server entry point
+├── dist/                   # Compiled JavaScript files
+└── package.json
+📋 API Endpoints
+Authentication Endpoints
+Register User
+URL: /api/auth/register
 
-Contributing
-Contributions are welcome! Please follow these steps:
+Method: POST
 
-Fork the repository.
-Create a new branch (git checkout -b feature/your-feature).
-Make your changes and commit (git commit -m "Add your feature").
-Push to the branch (git push origin feature/your-feature).
-Open a pull request.
+Auth Required: No
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+Request Body:
+
+json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "password": "password123"
+}
+Response:
+
+json
+{
+  "success": true,
+  "message": "User Created Done",
+  "statusCode": 201,
+  "data": {
+    "_id": "65a1b2c3d4e5f6a7b8c9d0e1",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "USER"
+  }
+}
+Login User
+URL: /api/auth/login
+
+Method: POST
+
+Auth Required: No
+
+Request Body:
+
+json
+{
+  "email": "john@example.com",
+  "password": "password123"
+}
+Response:
+
+json
+{
+  "success": true,
+  "message": "User Logged In Successfully",
+  "statusCode": 200,
+  "data": {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
+}
+Logout User
+URL: /api/auth/logout
+
+Method: POST
+
+Auth Required: Yes
+
+Response:
+
+json
+{
+  "success": true,
+  "message": "User Logged Out Successfully",
+  "statusCode": 200,
+  "data": ""
+}
+Job Endpoints
+Create Job
+URL: /api/jobs
+
+Method: POST
+
+Auth Required: Yes (USER role)
+
+Request Body:
+
+json
+{
+  "title": "Senior React Developer",
+  "description": "Looking for an experienced React developer...",
+  "jobType": "Fixed Price",
+  "minBudget": 5000,
+  "maxBudget": 8000,
+  "skillsRequired": "React",
+  "level": "Senior",
+  "locationType": "Remote"
+}
+Response:
+
+json
+{
+  "success": true,
+  "message": "Job is created",
+  "statusCode": 201,
+  "data": {
+    "_id": "65a1b2c3d4e5f6a7b8c9d0e2",
+    "user": "65a1b2c3d4e5f6a7b8c9d0e1",
+    "title": "Senior React Developer",
+    "description": "Looking for an experienced React developer...",
+    "jobType": "Fixed Price",
+    "minBudget": 5000,
+    "maxBudget": 8000,
+    "skillsRequired": "React",
+    "level": "Senior",
+    "locationType": "Remote",
+    "createdAt": "2024-01-12T10:30:00.000Z",
+    "updatedAt": "2024-01-12T10:30:00.000Z"
+  }
+}
+Get All Jobs (with query parameters)
+URL: /api/jobs?search=react&jobType=Fixed Price&level=Senior&page=1&limit=10&sort=-createdAt
+
+Method: GET
+
+Auth Required: Yes (USER role)
+
+Query Parameters:
+
+search: Search in title, jobType, and level fields
+
+jobType: Filter by job type (Fixed Price/Hourly)
+
+level: Filter by experience level (Junior/Mid/Senior)
+
+locationType: Filter by location type (Remote/On-site/Hybrid)
+
+page: Page number (default: 1)
+
+limit: Items per page (default: 10)
+
+sort: Sort field with prefix (- for descending)
+
+Response:
+
+json
+{
+  "success": true,
+  "message": "Jobs Data is Getted",
+  "statusCode": 200,
+  "data": [
+    {
+      "_id": "65a1b2c3d4e5f6a7b8c9d0e2",
+      "user": {
+        "_id": "65a1b2c3d4e5f6a7b8c9d0e1",
+        "name": "John Doe",
+        "email": "john@example.com"
+      },
+      "title": "Senior React Developer",
+      "description": "Looking for an experienced React developer...",
+      "jobType": "Fixed Price",
+      "minBudget": 5000,
+      "maxBudget": 8000,
+      "skillsRequired": "React",
+      "level": "Senior",
+      "locationType": "Remote",
+      "createdAt": "2024-01-12T10:30:00.000Z",
+      "updatedAt": "2024-01-12T10:30:00.000Z"
+    }
+  ]
+}
+Update Job
+URL: /api/jobs/:id
+
+Method: PUT
+
+Auth Required: Yes (USER role - only job owner)
+
+Request Body:
+
+json
+{
+  "title": "Updated React Developer Position",
+  "maxBudget": 9000
+}
+Response:
+
+json
+{
+  "success": true,
+  "message": "Job Data is Updated",
+  "statusCode": 200,
+  "data": {
+    "_id": "65a1b2c3d4e5f6a7b8c9d0e2",
+    "user": "65a1b2c3d4e5f6a7b8c9d0e1",
+    "title": "Updated React Developer Position",
+    "description": "Looking for an experienced React developer...",
+    "jobType": "Fixed Price",
+    "minBudget": 5000,
+    "maxBudget": 9000,
+    "skillsRequired": "React",
+    "level": "Senior",
+    "locationType": "Remote",
+    "createdAt": "2024-01-12T10:30:00.000Z",
+    "updatedAt": "2024-01-12T11:30:00.000Z"
+  }
+}
+Delete Job
+URL: /api/jobs/:id
+
+Method: DELETE
+
+Auth Required: Yes (USER role - only job owner)
+
+Response:
+
+json
+{
+  "success": true,
+  "message": "Job Data is Deleted",
+  "statusCode": 200,
+  "data": ""
+}
+🛡️ Authentication
+The API uses JWT authentication with secure HTTP-only cookies. After successful login, the server sets two cookies:
+
+accessToken - Short-lived token for API access
+
+refreshToken - Long-lived token for token refresh
+
+Required Headers for Protected Routes:
+
+http
+Cookie: accessToken=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+🎯 Skills Enum
+Available skills for job postings:
+
+HTML, CSS, JavaScript, TypeScript
+
+React, Next.js, Angular, Vue.js
+
+Node.js, Express.js, NestJS
+
+MongoDB, PostgreSQL, MySQL
+
+GraphQL, AWS, Docker, Git
+
+Figma, UI/UX Design
+
+🚦 Error Handling
+The API returns standardized error responses:
+
+json
+{
+  "success": false,
+  "message": "Error message",
+  "statusCode": 400,
+  "data": null
+}
+Common error status codes:
+
+400 - Bad Request
+
+401 - Unauthorized
+
+403 - Forbidden
+
+404 - Not Found
+
+500 - Internal Server Error
+
+🧪 Testing the API
+You can test the API using tools like:
+
+Postman
+
+Thunder Client (VS Code extension)
+
+curl commands
